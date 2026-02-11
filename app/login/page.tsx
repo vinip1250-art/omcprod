@@ -6,19 +6,21 @@ export default function Login() {
   const [password, setPassword] = useState("")
 
   async function handleLogin(e: any) {
-    e.preventDefault()
+  e.preventDefault()
 
-    const res = await fetch("/api/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    })
+  const res = await fetch("/api/auth", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",   // 🔥 ESSENCIAL
+    body: JSON.stringify({ email, password })
+  })
 
-    const data = await res.json()
-
-    localStorage.setItem("token", data.token)
+  if (res.ok) {
     window.location.href = "/dashboard"
+  } else {
+    alert("Login inválido")
   }
+}
 
   return (
     <div className="flex items-center justify-center h-screen">
