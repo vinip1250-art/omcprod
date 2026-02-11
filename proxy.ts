@@ -1,30 +1,22 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { verifyToken } from "./lib/auth"
+import jwt from "jsonwebtoken"
 
 export function proxy(request: NextRequest) {
-  const token = request.headers
-    .get("authorization")
-    ?.replace("Bearer ", "")
+  const token = request.cookies.get("token")?.value
 
   if (!token) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    )
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   try {
-    verifyToken(token)
+    jwt.verify(token, process.env.JWT_SECRET!)
     return NextResponse.next()
   } catch {
-    return NextResponse.json(
-      { error: "Invalid Token" },
-      { status: 401 }
-    )
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 }
 
 export const config = {
-  matcher: ["/api/products/:path*", "/api/dashboard/:path*"]
+  matcher: ["/dashboard/:path*", "/api/products/:path*", "/api/dashboard/:path*"]
 }
