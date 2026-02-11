@@ -5,7 +5,13 @@ export default function Dashboard() {
   const [data, setData] = useState<any>(null)
 
   useEffect(() => {
-    fetch("/api/dashboard")
+    const token = localStorage.getItem("token")
+
+    fetch("/api/dashboard", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(res => res.json())
       .then(setData)
   }, [])
@@ -17,10 +23,10 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
       <div className="grid grid-cols-4 gap-6">
-        <Card title="Investido" value={data.totalInvested} />
-        <Card title="Custo Real" value={data.totalRealCost} />
-        <Card title="Revenda" value={data.totalResale} />
-        <Card title="Lucro" value={data.profit} />
+        <Card title="Investido" value={data.totalInvested || 0} />
+        <Card title="Custo Real" value={data.totalRealCost || 0} />
+        <Card title="Revenda" value={data.totalResale || 0} />
+        <Card title="Lucro" value={data.profit || 0} />
       </div>
     </div>
   )
@@ -31,7 +37,7 @@ function Card({ title, value }: any) {
     <div className="bg-white p-6 rounded shadow">
       <p className="text-gray-500">{title}</p>
       <p className="text-xl font-bold">
-        R$ {value?.toFixed(2)}
+        R$ {Number(value).toFixed(2)}
       </p>
     </div>
   )
