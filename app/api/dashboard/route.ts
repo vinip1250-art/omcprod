@@ -3,16 +3,22 @@ import { prisma } from "@/lib/prisma"
 export async function GET() {
   const products = await prisma.product.findMany()
 
-  const totalInvested = products.reduce((a, p) => a + p.purchaseValue, 0)
-  const totalRealCost = products.reduce((a, p) => a + p.realCost, 0)
-  const totalResale = products.reduce((a, p) => a + (p.resaleValue || 0), 0)
+  const monthly: Record<string, number> = {}
 
-  const profit = totalResale - totalRealCost
+  products.forEach(p => {
+    const month = new Date(p.createdAt)
+      .toLocaleString("pt-BR", { month: "short", year: "numeric" })
+
+    const profit =
+      (p.resaleValue || 0) - p.realCost
+
+    monthly[month] = (monthly[month] || 0) + profit
+  })
 
   return Response.json({
-    totalInvested,
-    totalRealCost,
-    totalResale,
-    profit
+    monthly: Object.entries(monthly).map(([month, profit]) => ({
+      month,
+      profit
+    }))
   })
 }
