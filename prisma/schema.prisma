@@ -32,9 +32,14 @@ model Product {
   description String
   companyId   String
   company     Company    @relation(fields: [companyId], references: [id])
+
   purchases   Purchase[]
+  stocks      Stock[]     // ← ADICIONADO
+  sales       Sale[]      // ← ADICIONADO
+
   createdAt   DateTime   @default(now())
 }
+
 
 model Purchase {
   id             String   @id @default(cuid())
