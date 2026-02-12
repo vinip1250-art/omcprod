@@ -34,7 +34,7 @@ model Card {
   companyId  String
   company    Company  @relation(fields: [companyId], references: [id])
 
-  products   Product[]   // 🔥 RELAÇÃO INVERSA OBRIGATÓRIA
+  products   Product[]
 
   createdAt  DateTime @default(now())
 }
@@ -45,7 +45,7 @@ model Product {
   supplier        String?
   purchaseDate    DateTime
   deliveryDate    DateTime?
-  
+
   cardId          String?
   card            Card?    @relation(fields: [cardId], references: [id])
 
@@ -61,5 +61,9 @@ model Product {
   roi             Float?
   stockQuantity   Int      @default(1)
   status          String?
+
   companyId       String
-  company
+  company         Company  @relation(fields: [companyId], references: [id])
+
+  createdAt       DateTime @default(now())
+}
