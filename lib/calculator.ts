@@ -6,19 +6,18 @@ export const mileValues: Record<string, number> = {
 }
 
 export function calculateProduct(data: any) {
-
   const mileValue =
-    (data.pointsQuantity / 1000) *
+    (Number(data.pointsQuantity) / 1000) *
     (mileValues[data.pointsProgram] || 0)
 
   const realCost =
-    data.purchaseValue -
-    data.cashbackValue -
+    Number(data.purchaseValue) -
+    Number(data.cashbackValue || 0) -
     mileValue
 
   const profit =
     data.resaleValue
-      ? data.resaleValue - realCost
+      ? Number(data.resaleValue) - realCost
       : 0
 
   const roi =
@@ -26,16 +25,10 @@ export function calculateProduct(data: any) {
       ? (profit / realCost) * 100
       : 0
 
-  const pendingPoints =
-    data.creditedPoints
-      ? data.pointsQuantity - data.creditedPoints
-      : data.pointsQuantity
-
   return {
     mileValue,
     realCost,
     profit,
-    roi,
-    pendingPoints
+    roi
   }
 }
