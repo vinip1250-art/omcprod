@@ -40,24 +40,38 @@ model Product {
   createdAt   DateTime   @default(now())
 }
 
-
 model Purchase {
-  id             String   @id @default(cuid())
-  productId      String
-  product        Product  @relation(fields: [productId], references: [id])
-  purchaseDate   DateTime
-  orderNumber    String?
-  store          String?
-  purchaseValue  Float
-  freightCost    Float?
-  quantity       Int
-  cashbackValue  Float?
-  pointsQuantity Int?
-  pointsProgram  String?
-  delivered      Boolean  @default(false)
-  companyId      String
-  company        Company  @relation(fields: [companyId], references: [id])
-  createdAt      DateTime @default(now())
+  id              String   @id @default(cuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id])
+
+  purchaseDate    DateTime
+  deliveryDate    DateTime?
+
+  orderNumber     String?
+  store           String?
+  account         String?
+
+  purchaseValue   Float
+  freightCost     Float?
+  discountBefore  Float?
+
+  pointsReceived  Int?
+  pointsExpected  Int?
+  mileValue       Float?
+  cashbackValue   Float?
+
+  clubAndStore    String?
+  pointsX1        Float?
+
+  finalCost       Float?
+
+  delivered       Boolean  @default(false)
+
+  companyId       String
+  company         Company  @relation(fields: [companyId], references: [id])
+
+  createdAt       DateTime @default(now())
 }
 
 model Stock {
