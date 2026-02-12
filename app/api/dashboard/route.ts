@@ -1,24 +1,28 @@
 import { prisma } from "@/lib/prisma"
+import { getUserCompany } from "@/lib/auth"
 
 export async function GET() {
-  const products = await prisma.product.findMany()
+  const companyId = await getUserCompany()
 
-  const monthly: Record<string, number> = {}
+  const products = await prisma.product.findMany({
+    where: { companyId }
+  })
+
+  const programData: Record<string, number> = {}
 
   products.forEach(p => {
-    const month = new Date(p.createdAt)
-      .toLocaleString("pt-BR", { month: "short", year: "numeric" })
-
-    const profit =
-      (p.resaleValue || 0) - p.realCost
-
-    monthly[month] = (monthly[month] || 0) + profit
+    programData[p.pointsProgram] =
+      (programData[p.pointsProgram] || 0) + (p.profit || 0)
   })
 
   return Response.json({
-    monthly: Object.entries(monthly).map(([month, profit]) => ({
-      month,
-      profit
+    summary: {
+      invested: products.reduce((a,p)=>a+p.purchaseValue,0),
+      profit: products.reduce((a,p)=>a+(p.profit||0),0)
+    },
+    programChart: Object.entries(programData).map(([name,value])=>({
+      name,
+      value
     }))
   })
 }
