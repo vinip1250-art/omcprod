@@ -28,7 +28,9 @@ export default function ProductsPage() {
   return (
     <div>
       <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Produtos</h1>
+        <h1 className="text-2xl font-bold">
+          Produtos
+        </h1>
         <a
           href="/dashboard/products/new"
           className="bg-blue-600 text-white px-4 py-2 rounded"
@@ -38,12 +40,16 @@ export default function ProductsPage() {
       </div>
 
       <table className="min-w-full bg-white shadow rounded text-sm">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-200">
           <tr>
-            <th className="p-2">Descrição</th>
+            <th>Produto</th>
             <th>Compra</th>
+            <th>Cashback</th>
+            <th>Milhas</th>
             <th>Custo Real</th>
             <th>Revenda</th>
+            <th>Lucro</th>
+            <th>ROI %</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -53,8 +59,14 @@ export default function ProductsPage() {
             <tr key={p.id} className="border-t text-center">
               <td>{p.description}</td>
               <td>R$ {p.purchaseValue}</td>
-              <td>R$ {p.realCost}</td>
+              <td>R$ {p.cashbackValue}</td>
+              <td>R$ {p.mileValue?.toFixed(2)}</td>
+              <td>R$ {p.realCost?.toFixed(2)}</td>
               <td>R$ {p.resaleValue || "-"}</td>
+              <td className="text-green-600 font-semibold">
+                R$ {p.profit?.toFixed(2)}
+              </td>
+              <td>{p.roi?.toFixed(1)}%</td>
               <td>
                 <button
                   onClick={() => remove(p.id)}
