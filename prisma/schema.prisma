@@ -26,14 +26,17 @@ model User {
 }
 
 model Card {
-  id           String   @id @default(cuid())
-  name         String
-  limit        Float
-  basePoints   Float
-  program      String
-  companyId    String
-  company      Company  @relation(fields: [companyId], references: [id])
-  createdAt    DateTime @default(now())
+  id         String   @id @default(cuid())
+  name       String
+  limit      Float
+  basePoints Float
+  program    String
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id])
+
+  products   Product[]   // 🔥 RELAÇÃO INVERSA OBRIGATÓRIA
+
+  createdAt  DateTime @default(now())
 }
 
 model Product {
@@ -42,8 +45,10 @@ model Product {
   supplier        String?
   purchaseDate    DateTime
   deliveryDate    DateTime?
+  
   cardId          String?
   card            Card?    @relation(fields: [cardId], references: [id])
+
   purchaseValue   Float
   cashbackValue   Float
   pointsQuantity  Int
@@ -57,6 +62,4 @@ model Product {
   stockQuantity   Int      @default(1)
   status          String?
   companyId       String
-  company         Company  @relation(fields: [companyId], references: [id])
-  createdAt       DateTime @default(now())
-}
+  company
