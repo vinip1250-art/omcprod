@@ -16,10 +16,6 @@ export default function DashboardLayout({ children }: any) {
             Produtos
           </Link>
 
-          <Link href="/dashboard/cards" className="hover:text-blue-400">
-            Cartões
-          </Link>
-
           <Link href="/dashboard/simulator" className="hover:text-blue-400">
             Simulador
           </Link>
