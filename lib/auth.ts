@@ -11,7 +11,7 @@ export function generateToken(userId: string) {
 }
 
 export async function getUserFromToken() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies() // 🔥 AGORA É ASYNC
   const token = cookieStore.get("token")?.value
 
   if (!token) return null
