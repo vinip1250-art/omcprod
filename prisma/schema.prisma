@@ -1,41 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String    @id @default(cuid())
+  name      String
+  users     User[]
+  products  Product[]
+  purchases Purchase[]
+  stocks    Stock[]
+  sales     Sale[]
+  createdAt DateTime  @default(now())
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+}
+
 model Product {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   description String
   companyId   String
-  company     Company  @relation(fields: [companyId], references: [id])
+  company     Company    @relation(fields: [companyId], references: [id])
   purchases   Purchase[]
-  createdAt   DateTime @default(now())
+  createdAt   DateTime   @default(now())
 }
 
 model Purchase {
-  id              String   @id @default(cuid())
-  productId       String
-  product         Product  @relation(fields: [productId], references: [id])
-  purchaseDate    DateTime
-  orderNumber     String?
-  store           String?
-  purchaseValue   Float
-  freightCost     Float?
-  quantity        Int
-  cashbackValue   Float?
-  pointsQuantity  Int?
-  pointsProgram   String?
-  delivered       Boolean  @default(false)
-  companyId       String
-  company         Company  @relation(fields: [companyId], references: [id])
-  createdAt       DateTime @default(now())
+  id             String   @id @default(cuid())
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id])
+  purchaseDate   DateTime
+  orderNumber    String?
+  store          String?
+  purchaseValue  Float
+  freightCost    Float?
+  quantity       Int
+  cashbackValue  Float?
+  pointsQuantity Int?
+  pointsProgram  String?
+  delivered      Boolean  @default(false)
+  companyId      String
+  company        Company  @relation(fields: [companyId], references: [id])
+  createdAt      DateTime @default(now())
 }
 
 model Stock {
-  id          String   @id @default(cuid())
-  productId   String
-  product     Product  @relation(fields: [productId], references: [id])
-  quantity    Int
-  finalCost   Float
-  entryDate   DateTime
-  companyId   String
-  company     Company  @relation(fields: [companyId], references: [id])
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  finalCost Float
+  entryDate DateTime
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Sale {
