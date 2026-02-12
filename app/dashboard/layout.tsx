@@ -3,24 +3,23 @@ import Link from "next/link"
 export default function DashboardLayout({ children }: any) {
   return (
     <div className="flex min-h-screen">
-      
       <aside className="w-64 bg-gray-900 text-white p-6 flex flex-col">
         <h2 className="text-xl font-bold mb-8">OMC ERP</h2>
 
         <nav className="flex flex-col space-y-3 text-sm">
-          <Link href="/dashboard" className="hover:text-blue-400">
-            Dashboard
+          <Link href="/dashboard/compras" className="hover:text-blue-400">
+            Compras
           </Link>
-
+          <Link href="/dashboard/estoque" className="hover:text-blue-400">
+            Estoque
+          </Link>
+          <Link href="/dashboard/vendas" className="hover:text-blue-400">
+            Vendas
+          </Link>
           <Link href="/dashboard/products" className="hover:text-blue-400">
             Produtos
           </Link>
-
-          <Link href="/dashboard/simulator" className="hover:text-blue-400">
-            Simulador
-          </Link>
-
-          <Link href="/dashboard/reports" className="hover:text-blue-400">
+          <Link href="/dashboard/relatorios" className="hover:text-blue-400">
             Relatórios
           </Link>
         </nav>
@@ -29,7 +28,6 @@ export default function DashboardLayout({ children }: any) {
       <main className="flex-1 bg-gray-100 p-10">
         {children}
       </main>
-
     </div>
   )
 }
